@@ -8,34 +8,35 @@ app = Flask(__name__)
 
 sdk = mercadopago.SDK('APP_USR-1511828078260111-031707-ada29a19675fec62b574823a8f5c162c-1332740081')
 
-@app.route('/suscripcion', methods=['GET','POST'])
+@app.route('/suscripcion', methods=['GET'])
 def generar_pago():    
   # Crea un ítem en la preferencia
   preference_data = {
     "items": [
         {
-          "title": "Mi producto",
+          "title": "Suscripcion usuario premiun BRAINLY",
           "quantity": 1,
-          "unit_price": 75.76,
+          "unit_price": 20,
           "currency_id": "ARS"
         }
     ],
-    "payer": {
-      "phone": {},
-      "identification": {},
-      "address": {}
-   },
-   "back_urls": {
-            "success": 'http:localhost:3001/products/zapatillas',
+    "back_urls": {
+            "success": 'http://localhost:5000/pagoacreditado',
             "failure": '',
             "pending": '',
-        }
+    },
+    "auto_return":"approved",
+    "binary_mode": True
   }
   preference_response = sdk.preference().create(preference_data)
   preference = preference_response["response"]
-  print(preference)
-  return render_template[preference.Body.init_point]
+  pay_link = preference["init_point"]
+  return f'<a href={pay_link}>PAGAR</a>'
 
+#ruta success
+@app.route('/pagoacreditado', methods=['GET'])
+def pago_exitoso ():
+    return jsonify({'mensaje': 'Pago exitoso, ya podes acceder a las ventajas premiun'}), 200
 
 
 # Ruta para registrar un nuevo usuario
