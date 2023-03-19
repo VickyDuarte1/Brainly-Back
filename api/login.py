@@ -1,18 +1,21 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, request, jsonify
 import sqlite3
 
 # Crear un objeto Blueprint
 login = Blueprint('login', __name__)
 
+# Conectar a la base de datos
+conn = sqlite3.connect('users.db')
+
 # Ruta para autenticar un usuario existente
 
-@app.route('/login', methods=['POST'])
+@login.route('/login', methods=['POST'])
 def iniciar_sesion():
     usuario = request.json['usuario']
     contraseña = request.json['contraseña']
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect('users.db')
 
     # Verificar que el nombre de usuario y la contraseña sean correctos
     cursor = conn.execute(
@@ -31,6 +34,3 @@ def iniciar_sesion():
 
     # Cerrar la conexión a la base de datos
     conn.close()
-
-# Exportar el Blueprint
-return login

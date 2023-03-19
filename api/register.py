@@ -1,12 +1,15 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, request, jsonify
 import sqlite3
 
 # Crear un objeto Blueprint
-registro = Blueprint('registro', __name__)
+register = Blueprint('register', __name__)
+
+# Conectar a la base de datos
+conn = sqlite3.connect('users.db')
 
 # Ruta para registrar un nuevo usuario
 
-@app.route('/registro', methods=['POST'])
+@register.route('/register', methods=['POST'])
 def registrar_usuario():
     tipo_usuario = request.json['tipo_usuario']
     nombre = request.json['nombre']
@@ -21,7 +24,7 @@ def registrar_usuario():
     telefono = request.json['telefono']
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect('users.db')
 
     # # Verificar que el nombre de usuario no esté en uso
     # cursor = conn.execute(
@@ -66,6 +69,3 @@ def registrar_usuario():
 
     # Cerrar la conexión a la base de datos
     conn.close()
-
-# Exportar el Blueprint
-return registro
