@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import sqlite3
+import mercadopago
 
 app = Flask(__name__)
 
@@ -8,6 +9,42 @@ app = Flask(__name__)
 # cursor.execute('''CREATE TABLE doctor
 #                   (id INTEGER PRIMARY KEY, nombre TEXT, correo TEXT, usuario TEXT, contraseña TEXT, imagen TEXT, edad INTEGER, genero TEXT, fecha_nacimiento DATE, direccion TEXT, telefono TEXT, especialidad TEXT, credenciales TEXT)''')
 # conexion.close()
+
+#MERCADO_PAGO
+
+sdk = mercadopago.SDK('APP_USR-1511828078260111-031707-ada29a19675fec62b574823a8f5c162c-1332740081')
+
+@app.route('/suscripcion', methods=['GET', 'POST'])
+def generar_pago():    
+  # Crea un ítem en la preferencia
+  preference_data = {
+    "items": [
+        {
+          "title": "Suscripcion usuario premiun BRAINLY",
+          "quantity": 1,
+          "unit_price": 20,
+          "currency_id": "ARS"
+        }
+    ],
+    "back_urls": {
+            "success": 'http://localhost:5000/pagoacreditado',
+            "failure": 'http://localhost:5000/pagorechazado',
+    },
+    "auto_return":"approved",
+    "binary_mode": True
+  }
+  preference_response = sdk.preference().create(preference_data)
+  preference = preference_response["response"]
+  print(preference)
+  pay_link = preference["init_point"]
+  return f'<a href={pay_link}>PAGAR</a>'
+
+#ruta success
+@app.route('/pagoacreditado', methods=['GET'])
+def pago_exitoso ():
+    return f'<p>Pago exitoso, ya podes acceder a las ventajas premiun</p>'
+
+
 
 
 # Ruta para registrar un nuevo usuario
@@ -112,7 +149,7 @@ def obtener_usuarios():
     conn = sqlite3.connect('usuarios.db')
 
     # Obtener todos los usuarios de la base de datos
-    cursor = conn.execute('SELECT id, nombre, contraseña FROM usuarios')
+    cursor = conn.execute('SELECT id, nombre, contraseña FROM paciente')
     usuarios = [{'id': fila[0], 'nombre': fila[1], 'contraseña': fila[2]}
                 for fila in cursor.fetchall()]
 
@@ -131,7 +168,7 @@ def obtener_usuario(id):
 
     # Obtener el usuario correspondiente al ID
     cursor = conn.execute(
-        'SELECT id, nombre, contraseña FROM usuarios WHERE id = ?', (id,))
+        'SELECT id, nombre, contraseña FROM paciente WHERE id = ?', (id,))
     resultado = cursor.fetchone()
 
     # Si el usuario no existe, devolver un error 404
