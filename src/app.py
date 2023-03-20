@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 import sqlite3
 import mercadopago
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 sdk = mercadopago.SDK('APP_USR-1511828078260111-031707-ada29a19675fec62b574823a8f5c162c-1332740081')
 
-@app.route('/suscripcion', methods=['GET'])
+@app.route('/suscripcion', methods=['GET', 'POST'])
 def generar_pago():    
   # Crea un ítem en la preferencia
   preference_data = {
@@ -22,21 +22,21 @@ def generar_pago():
     ],
     "back_urls": {
             "success": 'http://localhost:5000/pagoacreditado',
-            "failure": '',
-            "pending": '',
+            "failure": 'http://localhost:5000/pagorechazado',
     },
     "auto_return":"approved",
     "binary_mode": True
   }
   preference_response = sdk.preference().create(preference_data)
   preference = preference_response["response"]
+  print(preference)
   pay_link = preference["init_point"]
   return f'<a href={pay_link}>PAGAR</a>'
 
 #ruta success
 @app.route('/pagoacreditado', methods=['GET'])
 def pago_exitoso ():
-    return jsonify({'mensaje': 'Pago exitoso, ya podes acceder a las ventajas premiun'}), 200
+    return f'<p>Pago exitoso, ya podes acceder a las ventajas premiun</p>'
 
 
 # Ruta para registrar un nuevo usuario
@@ -140,7 +140,7 @@ def obtener_usuarios():
     conn = sqlite3.connect('usuarios.db')
 
     # Obtener todos los usuarios de la base de datos
-    cursor = conn.execute('SELECT id, nombre, contraseña FROM usuarios')
+    cursor = conn.execute('SELECT id, nombre, contraseña FROM paciente')
     usuarios = [{'id': fila[0], 'nombre': fila[1], 'contraseña': fila[2]}
                 for fila in cursor.fetchall()]
 
