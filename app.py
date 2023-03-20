@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 import sqlite3
-
 app = Flask(__name__)
 
 # conexion = sqlite3.connect('usuarios.db')
@@ -112,7 +111,7 @@ def obtener_usuarios():
     conn = sqlite3.connect('usuarios.db')
 
     # Obtener todos los usuarios de la base de datos
-    cursor = conn.execute('SELECT id, nombre, contraseña FROM usuarios')
+    cursor = conn.execute('SELECT id, nombre, contraseña FROM paciente')
     usuarios = [{'id': fila[0], 'nombre': fila[1], 'contraseña': fila[2]}
                 for fila in cursor.fetchall()]
 
