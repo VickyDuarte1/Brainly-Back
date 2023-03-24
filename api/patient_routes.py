@@ -22,6 +22,7 @@ def obtener_pacientes():
 
     return jsonify({'pacientes': pacientes}), 200
 
+
 # Ruta para obtener un paciente por su ID
 
 
