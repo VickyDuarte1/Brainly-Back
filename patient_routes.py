@@ -1,5 +1,8 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
+
+patient = Blueprint('patient', __name__)
+
 import os
 
 patient = Blueprint('patient', __name__)
@@ -16,6 +19,8 @@ database_path = os.path.join(basedir, 'usuarios.db')
 @patient.route('/pacientes', methods=['GET'])
 def obtener_pacientes():
     # Conectar a la base de datos
+    conn = sqlite3.connect('usuarios.db')
+
     conn = sqlite3.connect(database_path)
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
@@ -28,13 +33,14 @@ def obtener_pacientes():
 
     return jsonify({'pacientes': pacientes}), 200
 
+
 # Ruta para obtener un paciente por su ID
 
 
 @patient.route('/pacientes/<int:id>', methods=['GET'])
 def obtener_paciente(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect('usuarios.db')
 
     # Obtener el paciente correspondiente al ID
     cursor = conn.execute(
@@ -92,7 +98,11 @@ def actualizar_paciente(id):
 @patient.route('/pacientes/<int:id>', methods=['DELETE'])
 def eliminar_paciente(id):
     # Conectar a la base de datos
+<<<<<<< HEAD:api/patient_routes.py
+    conn = sqlite3.connect('usuarios.db')
+=======
     conn = sqlite3.connect(database_path)
+>>>>>>> 4ed975b7adc7e3afb63469d5ef5dacc3ecffbeeb:patient_routes.py
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
@@ -115,7 +125,11 @@ def eliminar_paciente(id):
 @patient.route('/pacientes/<int:id>/deshabilitar', methods=['PUT'])
 def deshabilitar_paciente(id):
     # Conectar a la base de datos
+<<<<<<< HEAD:api/patient_routes.py
+    conn = sqlite3.connect('usuarios.db')
+=======
     conn = sqlite3.connect(database_path)
+>>>>>>> 4ed975b7adc7e3afb63469d5ef5dacc3ecffbeeb:patient_routes.py
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
