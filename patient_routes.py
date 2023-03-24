@@ -16,6 +16,7 @@ database_path = os.path.join(basedir, 'usuarios.db')
 @patient.route('/pacientes', methods=['GET'])
 def obtener_pacientes():
     # Conectar a la base de datos
+
     conn = sqlite3.connect(database_path)
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
@@ -115,6 +116,7 @@ def eliminar_paciente(id):
 @patient.route('/pacientes/<int:id>/deshabilitar', methods=['PUT'])
 def deshabilitar_paciente(id):
     # Conectar a la base de datos
+
     conn = sqlite3.connect(database_path)
 
     # Verificar que el paciente exista
