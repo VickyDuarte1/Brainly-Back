@@ -3,6 +3,11 @@ import sqlite3
 
 doctor = Blueprint('doctor', __name__)
 
+# Obtener la ruta base de tu proyecto
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Definir la ruta relativa a la base de datos
+database_path = os.path.join(basedir, 'usuarios.db')
 
 # Ruta para obtener todos los doctores
 
@@ -10,7 +15,7 @@ doctor = Blueprint('doctor', __name__)
 @doctor.route('/doctores', methods=['GET'])
 def obtener_doctores():
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
@@ -29,7 +34,7 @@ def obtener_doctores():
 @doctor.route('/doctores/<int:id>', methods=['GET'])
 def obtener_doctor(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Obtener el doctor correspondiente al ID
     cursor = conn.execute(
@@ -64,7 +69,7 @@ def actualizar_doctor(id):
     credenciales = request.json['credenciales']
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el doctor exista
     cursor = conn.execute('SELECT id FROM doctor WHERE id = ?', (id,))
@@ -88,7 +93,7 @@ def actualizar_doctor(id):
 @doctor.route('/doctores/<int:id>', methods=['DELETE'])
 def eliminar_doctor(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el doctor exista
     cursor = conn.execute('SELECT id FROM doctor WHERE id = ?', (id,))
@@ -111,7 +116,7 @@ def eliminar_doctor(id):
 @doctor.route('/doctores/<int:id>/deshabilitar', methods=['PUT'])
 def deshabilitar_doctor(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el doctor exista
     cursor = conn.execute('SELECT id FROM doctor WHERE id = ?', (id,))
