@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
 import os 
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 doctor = Blueprint('doctor', __name__)
 database_path = os.path.join(basedir, 'usuarios.db')
@@ -10,28 +11,7 @@ database_path = os.path.join(basedir, 'usuarios.db')
 @doctor.route('/doctores', methods=['GET'])
 def obtener_doctores():
     # Conectar a la base de datos
-  conn = sqlite3.connect(database_path)
-
-
-    # Obtener todos los usuarios de la base de datos
-  cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, imagen, edad, genero, fecha_nacimiento, direccion, telefono, especialidad, credenciales, contraseña FROM doctor')
-  doctores = [{'id': fila[0], 'nombre': fila[1], 'correo': fila[2], 'usuario': fila[3], 'imagen': fila[4], 'edad': fila[5], 'genero': fila[6], 'fecha_nacimiento': fila[7],
-                 'direccion': fila[8], 'telefono': fila[9], 'especialidad': fila[10], 'credenciales': fila[11], 'contraseña':fila[12]} for fila in cursor.fetchall()]
-
-# Obtener la ruta base de tu proyecto
-
-# Definir la ruta relativa a la base de datos
-database_path = os.path.join(basedir, 'usuarios.db')
-
-# Ruta para obtener todos los doctores
-
-
-@doctor.route('/doctores', methods=['GET'])
-def obtener_doctores():
-    # Conectar a la base de datos
     conn = sqlite3.connect(database_path)
-
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
 
@@ -43,7 +23,6 @@ def obtener_doctores():
 
     return jsonify({'doctores': doctores}), 200
 
-
 # Ruta para obtener un paciente por su ID
 
 
@@ -51,6 +30,7 @@ def obtener_doctores():
 def obtener_doctor(id):
     # Conectar a la base de datos
     conn = sqlite3.connect(database_path)
+
     # Obtener el doctor correspondiente al ID
     cursor = conn.execute(
         'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, especialidad, credenciales FROM doctor WHERE id = ?', (id,))
@@ -87,7 +67,8 @@ def actualizar_doctor(id):
     conn = sqlite3.connect(database_path)
 
 
-   # Verificar que el doctor exista
+    # Verificar que el doctor exista
+
     cursor = conn.execute('SELECT id FROM doctor WHERE id = ?', (id,))
     doctor = cursor.fetchone()
     if doctor is None:

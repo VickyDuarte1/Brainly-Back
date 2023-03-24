@@ -1,8 +1,5 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
-
-patient = Blueprint('patient', __name__)
-
 import os
 
 patient = Blueprint('patient', __name__)
@@ -21,7 +18,6 @@ def obtener_pacientes():
     # Conectar a la base de datos
 
     conn = sqlite3.connect(database_path)
-
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
         'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente')
@@ -32,7 +28,6 @@ def obtener_pacientes():
     conn.close()
 
     return jsonify({'pacientes': pacientes}), 200
-
 
 # Ruta para obtener un paciente por su ID
 
