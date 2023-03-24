@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import sqlite3
 import mercadopago
 
 app = Flask(__name__)
-
+CORS(app)
 # conexion = sqlite3.connect('usuarios.db')
 # cursor = conexion.cursor()
 # cursor.execute('''CREATE TABLE doctor
@@ -12,36 +13,45 @@ app = Flask(__name__)
 
 #MERCADO_PAGO
 
-sdk = mercadopago.SDK('APP_USR-1511828078260111-031707-ada29a19675fec62b574823a8f5c162c-1332740081')
+sdk = mercadopago.SDK('APP_USR-20109353218546-032217-2fb30a023e1c6a65a60b29367729a685-1332740081')
 
-@app.route('/suscripcion', methods=['GET', 'POST'])
+sdk.preference()
+
+@app.route('/generar_pago', methods=['POST'])
 def generar_pago():    
-  # Crea un ítem en la preferencia
-  preference_data = {
-    "items": [
-        {
-          "title": "Suscripcion usuario premiun BRAINLY",
-          "quantity": 1,
-          "unit_price": 20,
-          "currency_id": "ARS"
-        }
-    ],
-    "back_urls": {
-            "success": 'http://localhost:5000/pagoacreditado',
-            "failure": 'http://localhost:5000/pagorechazado',
-    },
-    "auto_return":"approved",
-    "binary_mode": True
-  }
-  preference_response = sdk.preference().create(preference_data)
-  preference = preference_response["response"]
-  print(preference)
-  pay_link = preference["init_point"]
-  return f'<a href={pay_link}>PAGAR</a>'
+  # Creacion del plan
+    plan_data = { 
+        "reason": "Usuario Premiun Brainly",
+        "auto_recurring": {
+        "frequency": 1,
+        "frequency_type": "months",
+        "free_trial": {
+            "frequency": 1,
+            "frequency_type": "months"
+        },
+        "transaction_amount": 250,
+        "currency_id": "ARS"
+        },
+        "back_url": "https://www.mercadopago.com.ar"
+    }
+    plan_response = sdk.plan().create(plan_data)
+  # Creacion de la suscripcion
+    subscription_data = {
+      "preapproval_plan_id": plan_response["response"]["id"],
+      "reason": plan_response["response"]["reason"],
+      "payer_email": request.json["payer"]["email"],
+      "auto_recurring": plan_response["response"]["auto_recurring"],
+      "card_token_id": request.json["token"],
+      "back_url": plan_response["response"]["back_url"],
+    }
+    subscription_response = sdk.subscription().create(subscription_data)
+    print(subscription_response) 
+    # print(pay_link)
+    return jsonify({"link": subscription_response["response"]["init_point"]}), 200
 
 #ruta success
-@app.route('/pagoacreditado', methods=['GET'])
-def pago_exitoso ():
+@app.route('/pago_exitoso', methods=['GET'])
+def pago_exitoso ():    
     return f'<p>Pago exitoso, ya podes acceder a las ventajas premiun</p>'
 
 
