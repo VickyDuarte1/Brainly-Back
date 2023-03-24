@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
+import os
 
 doctor = Blueprint('doctor', __name__)
 
