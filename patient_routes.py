@@ -17,7 +17,6 @@ database_path = os.path.join(basedir, 'usuarios.db')
 def obtener_pacientes():
     # Conectar a la base de datos
     conn = sqlite3.connect(database_path)
-
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
         'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente')
