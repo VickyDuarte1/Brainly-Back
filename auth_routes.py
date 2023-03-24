@@ -1,7 +1,14 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
+import os
 
 auth = Blueprint('auth', __name__)
+
+# Obtener la ruta base de tu proyecto
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Definir la ruta relativa a la base de datos
+database_path = os.path.join(basedir, 'usuarios.db')
 
 # Ruta para registrar un paciente o un doctor nuevo
 
@@ -21,7 +28,7 @@ def registrar_usuario():
     telefono = request.json['telefono']
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el nombre de usuario no esté en uso en la tabla paciente
     cursor = conn.execute(
@@ -70,7 +77,7 @@ def iniciar_sesion():
     contraseña = request.json['contraseña']
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el nombre de usuario y la contraseña sean correctos
     cursor = conn.execute(

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import Flask, request, jsonify
 import sqlite3
 app = Flask(__name__)
@@ -192,6 +193,25 @@ def eliminar_usuario(id):
 
     return jsonify({'mensaje': 'Usuario eliminado correctamente.'}), 200
 
+=======
+from flask import Flask
+from flask_cors import CORS
+from auth_routes import auth
+from doctor_routes import doctor
+from patient_routes import patient
+
+app = Flask(__name__)
+CORS(app)
+
+# Ruta de autenticación
+app.register_blueprint(auth)
+
+# Ruta CRUD doctores
+app.register_blueprint(doctor)
+
+# Ruta CRUD pacientes
+app.register_blueprint(patient)
+>>>>>>> 4ed975b7adc7e3afb63469d5ef5dacc3ecffbeeb
 
 if __name__ == '__main__':
     app.run()
