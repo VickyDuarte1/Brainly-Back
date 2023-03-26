@@ -1,7 +1,14 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
+import os
 
 patient = Blueprint('patient', __name__)
+
+# Obtener la ruta base de tu proyecto
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Definir la ruta relativa a la base de datos
+database_path = os.path.join(basedir, 'usuarios.db')
 
 # Ruta para obtener todos los pacientes
 
@@ -9,8 +16,8 @@ patient = Blueprint('patient', __name__)
 @patient.route('/pacientes', methods=['GET'])
 def obtener_pacientes():
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
 
+    conn = sqlite3.connect(database_path)
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
         'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente')
@@ -28,7 +35,7 @@ def obtener_pacientes():
 @patient.route('/pacientes/<int:id>', methods=['GET'])
 def obtener_paciente(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Obtener el paciente correspondiente al ID
     cursor = conn.execute(
@@ -62,7 +69,7 @@ def actualizar_paciente(id):
     resultado = request.json['resultado']
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
@@ -86,7 +93,7 @@ def actualizar_paciente(id):
 @patient.route('/pacientes/<int:id>', methods=['DELETE'])
 def eliminar_paciente(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
@@ -109,7 +116,8 @@ def eliminar_paciente(id):
 @patient.route('/pacientes/<int:id>/deshabilitar', methods=['PUT'])
 def deshabilitar_paciente(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect('usuarios.db')
+
+    conn = sqlite3.connect(database_path)
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
