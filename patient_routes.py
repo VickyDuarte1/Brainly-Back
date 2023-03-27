@@ -138,6 +138,7 @@ def habilitar_paciente(id):
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
     paciente = cursor.fetchone()
     if paciente is None:
+
         return jsonify({'mensaje': 'Paciente no encontrado.'}), 404
 
     # Habilitar el paciente en la base de datos
