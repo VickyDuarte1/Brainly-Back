@@ -131,6 +131,7 @@ def deshabilitar_paciente(id):
 @patient.route('/pacientes/<int:id>/habilitar', methods=['PUT'])
 def habilitar_paciente(id):
     # Conectar a la base de datos
+
     conn = sqlite3.connect('usuarios.db')
 
     # Verificar que el paciente exista
