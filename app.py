@@ -17,9 +17,8 @@ app.register_blueprint(doctor)
 # Ruta CRUD pacientes
 app.register_blueprint(patient)
 
-#Ruta MERCADO_PAGO
+# Ruta MERCADO_PAGO 
 app.register_blueprint(merpago)
-
 
 if __name__ == '__main__':
     app.run()
