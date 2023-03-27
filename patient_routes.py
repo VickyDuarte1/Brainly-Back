@@ -1,14 +1,7 @@
 from flask import Blueprint, request, jsonify
 import sqlite3
-import os
 
 patient = Blueprint('patient', __name__)
-
-# Obtener la ruta base de tu proyecto
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-# Definir la ruta relativa a la base de datos
-database_path = os.path.join(basedir, 'usuarios.db')
 
 # Ruta para obtener todos los pacientes
 
@@ -16,7 +9,8 @@ database_path = os.path.join(basedir, 'usuarios.db')
 @patient.route('/pacientes', methods=['GET'])
 def obtener_pacientes():
     # Conectar a la base de datos
-    conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect('usuarios.db')
+
     # Obtener todos los usuarios de la base de datos
     cursor = conn.execute(
         'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente')
@@ -34,7 +28,7 @@ def obtener_pacientes():
 @patient.route('/pacientes/<int:id>', methods=['GET'])
 def obtener_paciente(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect('usuarios.db')
 
     # Obtener el paciente correspondiente al ID
     cursor = conn.execute(
@@ -68,7 +62,7 @@ def actualizar_paciente(id):
     resultado = request.json['resultado']
 
     # Conectar a la base de datos
-    conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect('usuarios.db')
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
@@ -92,7 +86,7 @@ def actualizar_paciente(id):
 @patient.route('/pacientes/<int:id>', methods=['DELETE'])
 def eliminar_paciente(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect('usuarios.db')
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
@@ -115,7 +109,7 @@ def eliminar_paciente(id):
 @patient.route('/pacientes/<int:id>/deshabilitar', methods=['PUT'])
 def deshabilitar_paciente(id):
     # Conectar a la base de datos
-    conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect('usuarios.db')
 
     # Verificar que el paciente exista
     cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
@@ -125,10 +119,32 @@ def deshabilitar_paciente(id):
 
     # Deshabilitar el paciente en la base de datos
     conn.execute(
-        'UPDATE paciente SET habilitado = ? WHERE id = ?', (False, id))
+        'UPDATE paciente SET activo = ? WHERE id = ?', (False, id))
     conn.commit()
 
     # Cerrar la conexión a la base de datos
     conn.close()
 
     return jsonify({'mensaje': 'Paciente deshabilitado correctamente.'}), 200
+
+
+@patient.route('/pacientes/<int:id>/habilitar', methods=['PUT'])
+def habilitar_paciente(id):
+    # Conectar a la base de datos
+    conn = sqlite3.connect('usuarios.db')
+
+    # Verificar que el paciente exista
+    cursor = conn.execute('SELECT id FROM paciente WHERE id = ?', (id,))
+    paciente = cursor.fetchone()
+    if paciente is None:
+        return jsonify({'mensaje': 'Paciente no encontrado.'}), 404
+
+    # Habilitar el paciente en la base de datos
+    conn.execute(
+        'UPDATE paciente SET activo = ? WHERE id = ?', (True, id))
+    conn.commit()
+
+    # Cerrar la conexión a la base de datos
+    conn.close()
+
+    return jsonify({'mensaje': 'Paciente habilitado correctamente.'}), 200
