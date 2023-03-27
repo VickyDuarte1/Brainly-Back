@@ -46,4 +46,4 @@ def generar_pago():
 #ruta success
 @merpago.route('/pago_exitoso', methods=['GET','POST'])
 def pago_exitoso ():    
-    return f'<p>Pago exitoso, ya podes acceder a las ventajas premiun</p>'
+    return f'<p>Gracias por suscribirte culeau</p>'
