@@ -41,7 +41,7 @@ def obtener_paciente(id):
 
     # Obtener el paciente correspondiente al ID
  cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente WHERE id = ?', (id,))
+        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo FROM paciente WHERE id = ?', (id,))
  resultado = cursor.fetchone()
 
     # Si el paciente no existe, devolver un error 404
@@ -51,7 +51,7 @@ def obtener_paciente(id):
     # Cerrar la conexión a la base de datos
  conn.close()
 
- return jsonify({'paciente': {'id': resultado[0], 'nombre': resultado[1], 'correo': resultado[2], 'usuario': resultado[3], 'contraseña': resultado[4], 'imagen': resultado[5], 'edad': resultado[6], 'genero': resultado[7], 'fecha_nacimiento': resultado[8], 'direccion': resultado[9], 'telefono': resultado[10], 'resultado': resultado[11]}}), 200
+ return jsonify({'paciente': {'id': resultado[0], 'nombre': resultado[1], 'correo': resultado[2], 'usuario': resultado[3], 'contraseña': resultado[4], 'imagen': resultado[5], 'edad': resultado[6], 'genero': resultado[7], 'fecha_nacimiento': resultado[8], 'direccion': resultado[9], 'telefono': resultado[10], 'resultado': resultado[11], activo:[12] }}), 200
 
 # Ruta para actualizar un paciente existente
 
