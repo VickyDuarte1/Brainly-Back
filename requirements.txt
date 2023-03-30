@@ -7,3 +7,4 @@ Flask-Login==0.5.0
 Flask-WTF==1.0.0
 PyJWT==2.3.0
 mercadopago==2.2.0
+sendgrid==6.10.0
