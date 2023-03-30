@@ -116,7 +116,6 @@ def eliminar_paciente(id):
 
 # Ruta para deshabilitar un paciente existente
 
-
 @patient.route('/pacientes/<int:id>/deshabilitar', methods=['PUT'])
 def deshabilitar_paciente(id):
     # Conectar a la base de datos
