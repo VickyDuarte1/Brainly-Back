@@ -21,9 +21,9 @@ def obtener_pacientes():
 
     # Obtener todos los usuarios de la base de datos
  cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente')
+        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo FROM paciente')
  pacientes = [{'id': fila[0], 'nombre': fila[1], 'correo': fila[2], 'usuario': fila[3], 'contraseña': fila[4], 'imagen': fila[5], 'edad': fila[6], 'genero': fila[7], 'fecha_nacimiento': fila[8],
-                 'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11]} for fila in cursor.fetchall()]
+                 'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11], 'activo':fila[12] } for fila in cursor.fetchall()]
 
     # Cerrar la conexión a la base de datos
  conn.close()
