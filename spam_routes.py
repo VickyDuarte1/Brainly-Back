@@ -8,14 +8,16 @@ spam = Blueprint("spam", __name__)
 
 @spam.route("/spam", methods=["POST"])
 def spam():
-    message = Mail(
-        from_email='from_email@example.com',
-        to_emails='to@example.com',
-        subject='Enviando con Twilio SendGrid es divertido',
-        html_content='<strong>y fácil de hacer en cualquier lugar, incluso con Python</strong>')
-    try:
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-        response = sg.send(message)
-        return f"Email enviado! Código de estado: {response.status_code}"
-    except Exception as e:
-        return f"Error al enviar el correo electrónico: {e}"
+message = Mail(
+    from_email='from_email@example.com',
+    to_emails='to@example.com',
+    subject='Sending with Twilio SendGrid is Fun',
+    html_content='<strong>and easy to do anywhere, even with Python</strong>')
+try:
+    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    response = sg.send(message)
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
+except Exception as e:
+    print(e.message)
