@@ -20,7 +20,9 @@ sdk = mercadopago.SDK(access_token)
 def generar_pago():    
   # Traer del plan creado
     print({'ESTO ES EL FORM': request.json})
-    url = f'https://api.mercadopago.com/preapproval_plan/{request.json["plan"]}'
+    
+    url = 'https://api.mercadopago.com/preapproval_plan/2c9380848712f89601871662a59e0153'
+
     headers = {'Authorization': 'Bearer APP_USR-20109353218546-032217-2fb30a023e1c6a65a60b29367729a685-1332740081'}
     response = requests.get(url, headers=headers)
     plan_response = response.json()

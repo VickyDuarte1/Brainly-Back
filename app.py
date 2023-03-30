@@ -6,6 +6,7 @@ from patient_routes import patient
 from mp_routes import merpago
 from comments_route import comments
 
+
 app = Flask(__name__)
 CORS(app)
 
@@ -23,6 +24,7 @@ app.register_blueprint(merpago)
 
 # Ruta Comentarios/Reviews
 app.register_blueprint(comments)
+
 
 if __name__ == '__main__':
     app.run()

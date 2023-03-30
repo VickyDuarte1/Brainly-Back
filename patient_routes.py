@@ -21,9 +21,9 @@ def obtener_pacientes():
 
     # Obtener todos los usuarios de la base de datos
  cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente')
+        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo FROM paciente')
  pacientes = [{'id': fila[0], 'nombre': fila[1], 'correo': fila[2], 'usuario': fila[3], 'contraseña': fila[4], 'imagen': fila[5], 'edad': fila[6], 'genero': fila[7], 'fecha_nacimiento': fila[8],
-                 'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11]} for fila in cursor.fetchall()]
+                 'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11], 'activo':fila[12] } for fila in cursor.fetchall()]
 
     # Cerrar la conexión a la base de datos
  conn.close()
@@ -41,7 +41,7 @@ def obtener_paciente(id):
 
     # Obtener el paciente correspondiente al ID
  cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente WHERE id = ?', (id,))
+        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo FROM paciente WHERE id = ?', (id,))
  resultado = cursor.fetchone()
 
     # Si el paciente no existe, devolver un error 404
@@ -51,7 +51,7 @@ def obtener_paciente(id):
     # Cerrar la conexión a la base de datos
  conn.close()
 
- return jsonify({'paciente': {'id': resultado[0], 'nombre': resultado[1], 'correo': resultado[2], 'usuario': resultado[3], 'contraseña': resultado[4], 'imagen': resultado[5], 'edad': resultado[6], 'genero': resultado[7], 'fecha_nacimiento': resultado[8], 'direccion': resultado[9], 'telefono': resultado[10], 'resultado': resultado[11]}}), 200
+ return jsonify({'paciente': {'id': resultado[0], 'nombre': resultado[1], 'correo': resultado[2], 'usuario': resultado[3], 'contraseña': resultado[4], 'imagen': resultado[5], 'edad': resultado[6], 'genero': resultado[7], 'fecha_nacimiento': resultado[8], 'direccion': resultado[9], 'telefono': resultado[10], 'resultado': resultado[11], activo:[12] }}), 200
 
 # Ruta para actualizar un paciente existente
 
