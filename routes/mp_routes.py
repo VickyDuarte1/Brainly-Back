@@ -46,6 +46,25 @@ def generar_pago():
         return jsonify({"error": subscription_response["response"]["message"]}), status_code
 
 #ruta success
-@merpago.route('/pago_exitoso', methods=['GET','POST'])
+@merpago.route('/pago_exitoso', methods=['POST'])
 def pago_exitoso ():    
-    return f'<p>Gracias por suscribirte culeau</p>'
+    # Obtener datos de la noti de MP
+    notificacion = request.get_json()
+    # status del pago
+    status_pago = notificacion["status"]
+
+    if status_pago == 'approved':
+        # Obtener mail del usuario para buscar en DB
+        comprador = notificacion['payer']
+        correo_electronico = comprador['email']
+
+        # Conexión con DB y setear a premium
+        conn = sqlite3.connect(database_path)
+        conn.execute(
+        'UPDATE paciente SET premium = ? WHERE correo = ?', (True, correo_electronico))
+        conn.commit()
+
+        # Cerrar conexión 
+        conn.close()
+
+    return jsonify({'mensaje': 'Gracias por suscribirte culiau'})
