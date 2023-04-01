@@ -17,10 +17,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Definir la ruta relativa a la base de datos
 database_path = os.path.join(basedir, 'usuarios.db')
 
-cloudinary.config(cloud_name='brainlypf',
-                  api_key='143982914773545',
-                  api_secret='Qt7iifjrFNj2-rFkrn9dssdYaME')
-
 model = keras.models.load_model("./models/classification.h5")
 classes = ['Ningún Tumor', 'Tumor Pituitario',
            'Tumor Meningioma', 'Tumor Glioma']
@@ -59,9 +55,5 @@ def mainPage():
     classification = np.where(answ == np.amax(answ))[1][0]
     predicted_results = names(classification)+' Detectado'
 
-    # Guardar imagen en Cloudinary
-    cloudinary_response = cloudinary.uploader.upload(file, folder='images')
-    image_url = cloudinary_response.get('url')
-
     # Devuelve el resultado de la clasificación y la URL de la imagen en formato JSON
-    return jsonify(filename=filename, predicted_results=predicted_results, image_url=image_url)
+    return jsonify(filename=filename, predicted_results=predicted_results)
