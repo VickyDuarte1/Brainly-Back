@@ -9,3 +9,4 @@ PyJWT==2.3.0
 mercadopago==2.2.0
 cloudinary==1.32.0
 numpy==1.21.6
+tensorflow==2.12.0
