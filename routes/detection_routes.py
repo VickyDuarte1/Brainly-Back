@@ -9,6 +9,7 @@ from PIL import Image
 import os
 
 detection = Blueprint('detection', __name__)
+CORS(detection)
 
 # Obtener la ruta base de tu proyecto
 basedir = os.path.abspath(os.path.dirname(__file__))
