@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
-from auth_routes import auth
-from doctor_routes import doctor
-from patient_routes import patient
-from mp_routes import merpago
-from comments_route import comments
+from routes.auth_routes import auth
+from routes.doctor_routes import doctor
+from routes.patient_routes import patient
+from routes.mp_routes import merpago
+from routes.comments_route import comments
 
 
 app = Flask(__name__)
