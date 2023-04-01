@@ -9,7 +9,7 @@ from routes.detection_routes import detection
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": ["http://localhost:3000", "https://brainly-back.onrender.com"]}})
 
 # Ruta de autenticación
 app.register_blueprint(auth)
@@ -31,4 +31,4 @@ app.register_blueprint(detection)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
