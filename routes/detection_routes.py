@@ -17,7 +17,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Definir la ruta relativa a la base de datos
 database_path = os.path.join(basedir, 'usuarios.db')
 
-model = keras.models.load_model("./models/classification.h5")
+model = keras.models.load_model("../models/classification.h5")
 classes = ['Ningún Tumor', 'Tumor Pituitario',
            'Tumor Meningioma', 'Tumor Glioma']
 
