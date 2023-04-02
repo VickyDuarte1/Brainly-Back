@@ -20,22 +20,22 @@ database_path = os.path.join(basedir, 'usuarios.db')
 def obtener_pacientes():
     # Conectar a la base de datos
     #   
- conn = sqlite3.connect(database_path)
+     conn = sqlite3.connect(database_path)
 
     # Obtener todos los usuarios de la base de datos
- cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo, premium FROM paciente')
- pacientes = [{'id': fila[0], 'nombre': fila[1], 'correo': fila[2], 'usuario': fila[3], 'contraseña': fila[4], 'imagen': fila[5], 'edad': fila[6], 'genero': fila[7], 'fecha_nacimiento': fila[8],
-                 'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11], 'activo':fila[12], 'premium': fila[13] } for fila in cursor.fetchall()]
+     cursor = conn.execute(
+            'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo, premium FROM paciente')
+     pacientes = [{'id': fila[0], 'nombre': fila[1], 'correo': fila[2], 'usuario': fila[3], 'contraseña': fila[4], 'imagen': fila[5], 'edad': fila[6], 'genero': fila[7], 'fecha_nacimiento': fila[8],
+                     'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11], 'activo':fila[12], 'premium': fila[13] } for fila in cursor.fetchall()]
 
     # Cerrar la conexión a la base de datos
- conn.close()
+     conn.close()
 
  # Emite el evento de Socket.io a todos los clientes conectados
- socketio.emit('notificacion', 'Ruta para obtener todos los pacientes', namespace='/')
+     socketio.emit('notificacion', 'Ruta para obtener todos los pacientes', namespace='/')
 
 
- return jsonify({'pacientes': pacientes}), 200
+     return jsonify({'pacientes': pacientes}), 200
 
 
 # Ruta para obtener un paciente por su ID
