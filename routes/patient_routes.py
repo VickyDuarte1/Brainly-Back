@@ -1,9 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, Response
+from flask_sse import sse
 import sqlite3
 import os
 
 
-patient = Blueprint('patient', __name__,)
+patient = Blueprint('patient', __name__)
 
 # Obtener la ruta base de tu proyecto
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -12,8 +13,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 database_path = os.path.join(basedir, 'usuarios.db')
 
 # Ruta para obtener todos los pacientes
-
-
 @patient.route('/pacientes', methods=['GET'])
 def obtener_pacientes():
     # Conectar a la base de datos
@@ -28,7 +27,12 @@ def obtener_pacientes():
     # Cerrar la conexión a la base de datos
     conn.close()
 
-    return jsonify({'pacientes': pacientes}), 200
+    # Crear evento SSE con la lista de pacientes
+    data = {'pacientes': pacientes}
+    sse.publish(data, type='pacientes')
+
+    # Devolver una respuesta vacía para que no se cierre la conexión SSE
+    return Response(status=200, headers={'Content-Type': 'text/event-stream'})
 
 
 # Ruta para obtener un paciente por su ID
