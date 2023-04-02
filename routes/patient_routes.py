@@ -3,7 +3,9 @@ from flask_socketio import SocketIO, emit
 import sqlite3
 import os
 
-patient = Blueprint('patient', __name__)
+socketio = SocketIO()
+
+patient = Blueprint('patient', __name__, socketio=socketio)
 
 # Obtener la ruta base de tu proyecto
 basedir = os.path.abspath(os.path.dirname(__file__))
