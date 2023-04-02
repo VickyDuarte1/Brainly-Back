@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_socketio import emit
 import sqlite3
 import os
 
@@ -10,54 +11,58 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Definir la ruta relativa a la base de datos
 database_path = os.path.join(basedir, 'usuarios.db')
 
-# Ruta para obtener todos los pacientes
+### Ruta para obtener todos los pacientes ###
 
 
 @patient.route('/pacientes', methods=['GET'])
 def obtener_pacientes():
+
     # Conectar a la base de datos
-    #   
- conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect(database_path)
 
     # Obtener todos los usuarios de la base de datos
- cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente')
- pacientes = [{'id': fila[0], 'nombre': fila[1], 'correo': fila[2], 'usuario': fila[3], 'contraseña': fila[4], 'imagen': fila[5], 'edad': fila[6], 'genero': fila[7], 'fecha_nacimiento': fila[8],
-                 'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11]} for fila in cursor.fetchall()]
+    cursor = conn.execute(
+        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo FROM paciente')
+    pacientes = [{'id': fila[0], 'nombre': fila[1], 'correo': fila[2], 'usuario': fila[3], 'contraseña': fila[4], 'imagen': fila[5], 'edad': fila[6], 'genero': fila[7], 'fecha_nacimiento': fila[8],
+                  'direccion': fila[9], 'telefono': fila[10], 'resultado': fila[11], 'activo':fila[12]} for fila in cursor.fetchall()]
 
     # Cerrar la conexión a la base de datos
- conn.close()
+    conn.close()
 
- return jsonify({'pacientes': pacientes}), 200
+    # Emite el evento de Socket.io a todos los clientes conectados
+    emit('notificacion', 'Ruta para obtener todos los pacientes')
 
+    return jsonify({'pacientes': pacientes}), 200
 
-# Ruta para obtener un paciente por su ID
+### Ruta para obtener un paciente por su ID ###
 
 
 @patient.route('/pacientes/<int:id>', methods=['GET'])
 def obtener_paciente(id):
+
     # Conectar a la base de datos
- conn = sqlite3.connect(database_path)
+    conn = sqlite3.connect(database_path)
 
     # Obtener el paciente correspondiente al ID
- cursor = conn.execute(
-        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado FROM paciente WHERE id = ?', (id,))
- resultado = cursor.fetchone()
+    cursor = conn.execute(
+        'SELECT id, nombre, correo, usuario, contraseña, imagen, edad, genero, fecha_nacimiento, direccion, telefono, resultado, activo FROM paciente WHERE id = ?', (id,))
+    resultado = cursor.fetchone()
 
     # Si el paciente no existe, devolver un error 404
- if resultado is None:
+    if resultado is None:
         return jsonify({'mensaje': 'Paciente no encontrado.'}), 404
 
     # Cerrar la conexión a la base de datos
- conn.close()
+    conn.close()
 
- return jsonify({'paciente': {'id': resultado[0], 'nombre': resultado[1], 'correo': resultado[2], 'usuario': resultado[3], 'contraseña': resultado[4], 'imagen': resultado[5], 'edad': resultado[6], 'genero': resultado[7], 'fecha_nacimiento': resultado[8], 'direccion': resultado[9], 'telefono': resultado[10], 'resultado': resultado[11]}}), 200
+    return jsonify({'paciente': {'id': resultado[0], 'nombre': resultado[1], 'correo': resultado[2], 'usuario': resultado[3], 'contraseña': resultado[4], 'imagen': resultado[5], 'edad': resultado[6], 'genero': resultado[7], 'fecha_nacimiento': resultado[8], 'direccion': resultado[9], 'telefono': resultado[10], 'resultado': resultado[11], activo: [12]}}), 200
 
-# Ruta para actualizar un paciente existente
+### Ruta para actualizar un paciente existente ###
 
 
 @patient.route('/pacientes/<int:id>', methods=['PUT'])
 def actualizar_paciente(id):
+
     nombre = request.json['nombre']
     correo = request.json['correo']
     usuario = request.json['usuario']
@@ -89,14 +94,13 @@ def actualizar_paciente(id):
 
     return jsonify({'mensaje': 'Paciente actualizado correctamente.'}), 200
 
-# Ruta para eliminar un paciente existente
+### Ruta para eliminar un paciente existente ###
 
 
 @patient.route('/pacientes/<int:id>', methods=['DELETE'])
 def eliminar_paciente(id):
-    # Conectar a la base de datos
-    
 
+    # Conectar a la base de datos
     conn = sqlite3.connect(database_path)
 
     # Verificar que el paciente exista
@@ -114,13 +118,13 @@ def eliminar_paciente(id):
 
     return jsonify({'mensaje': 'Paciente eliminado correctamente.'}), 200
 
-# Ruta para deshabilitar un paciente existente
+### Ruta para deshabilitar un paciente existente ###
+
 
 @patient.route('/pacientes/<int:id>/deshabilitar', methods=['PUT'])
 def deshabilitar_paciente(id):
+
     # Conectar a la base de datos
-
-
     conn = sqlite3.connect(database_path)
 
     # Verificar que el paciente exista
@@ -139,9 +143,12 @@ def deshabilitar_paciente(id):
 
     return jsonify({'mensaje': 'Paciente deshabilitado correctamente.'}), 200
 
+### Ruta para habilitar un paciente existente ###
+
 
 @patient.route('/pacientes/<int:id>/habilitar', methods=['PUT'])
 def habilitar_paciente(id):
+
     # Conectar a la base de datos
     conn = sqlite3.connect(database_path)
 
