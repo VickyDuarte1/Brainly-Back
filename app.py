@@ -29,5 +29,5 @@ app.register_blueprint(comments)
 
 
 if __name__ == '__main__':
-    app.run()
     socketio.run(app)
+    app.run()
