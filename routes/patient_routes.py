@@ -4,7 +4,8 @@ import sqlite3
 import os
 
 
-patient = Blueprint('patient', __name__,)
+patient = Blueprint('patient', __name__,)socketio = SocketIO()
+socketio = SocketIO()
 
 # Obtener la ruta base de tu proyecto
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -31,7 +32,7 @@ def obtener_pacientes():
      conn.close()
 
  # Emite el evento de Socket.io a todos los clientes conectados
-     SocketIO.emit('notificacion', 'Ruta para obtener todos los pacientes', namespace='/')
+     socketio.emit('notificacion', 'Ruta para obtener todos los pacientes', namespace='/')
 
 
      return jsonify({'pacientes': pacientes}), 200
