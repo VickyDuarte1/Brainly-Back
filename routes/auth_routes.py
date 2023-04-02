@@ -78,18 +78,19 @@ def iniciar_sesion():
 
     # Conectar a la base de datos
     conn = sqlite3.connect(database_path)
-
+   
     # Verificar que el nombre de usuario y la contraseña sean correctos
     cursor = conn.execute(
-        'SELECT usuario, contraseña, "paciente" as tipo_usuario FROM paciente WHERE usuario = ? AND contraseña = ?'
+        'SELECT usuario, contraseña, activo, "paciente" as tipo_usuario FROM paciente WHERE usuario = ? AND contraseña = ?'
         ' UNION '
-        'SELECT usuario, contraseña, "doctor" as tipo_usuario FROM doctor WHERE usuario = ? AND contraseña = ?',
+        'SELECT usuario, contraseña, NULL as activo, "doctor" as tipo_usuario FROM doctor WHERE usuario = ? AND contraseña = ?',
         (usuario, contraseña, usuario, contraseña))
     resultado = cursor.fetchone()
     if resultado is None:
         return jsonify({'mensaje': 'Nombre de usuario o contraseña incorrectos.'}), 401
-
-    tipo_usuario = resultado[2]
+    if resultado[2] == False:
+        return jsonify({"mensaje": "No se puede culiao tas desactivao"})
+    tipo_usuario = resultado[3]
 
     # El inicio de sesión es correcto
     return jsonify({'mensaje': 'Inicio de sesión correcto.', 'tipo_usuario': tipo_usuario}), 200
