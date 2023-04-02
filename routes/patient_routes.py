@@ -30,8 +30,7 @@ def obtener_pacientes():
  conn.close()
 
  # Emite el evento de Socket.io a todos los clientes conectados
- if 'sid' in request:
-    emit('notificacion', 'Ruta para obtener todos los pacientes', namespace='/')
+ emit('notificacion', 'Ruta para obtener todos los pacientes', namespace='/')
 
 
  return jsonify({'pacientes': pacientes}), 200
