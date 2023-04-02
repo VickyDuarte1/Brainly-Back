@@ -10,7 +10,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Definir la ruta relativa a la base de datos
 database_path = os.path.join(basedir, 'usuarios.db')
 
-### Ruta para registrar un paciente o un doctor nuevo ###
+# Ruta para registrar un paciente o un doctor nuevo
 
 
 @auth.route('/registro', methods=['POST'])
@@ -68,7 +68,7 @@ def registrar_usuario():
     # Cerrar la conexión a la base de datos
     conn.close()
 
-### Ruta para autenticar un usuario existente ###
+# Ruta para autenticar un usuario existente
 
 
 @auth.route('/login', methods=['POST'])
