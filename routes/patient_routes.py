@@ -4,7 +4,7 @@ import sqlite3
 import os
 
 
-patient = Blueprint('patient', __name__,)socketio = SocketIO()
+patient = Blueprint('patient', __name__,)
 socketio = SocketIO()
 
 # Obtener la ruta base de tu proyecto
