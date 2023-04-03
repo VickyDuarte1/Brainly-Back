@@ -27,4 +27,5 @@ my_app.register_blueprint(merpago)
 my_app.register_blueprint(comments)
 
 if __name__ == '__main__':
+    my_app.run()
     socketio.run(my_app)
