@@ -4,7 +4,7 @@ from app import my_app, socketio
 import sqlite3
 import os
 
-socketio = SocketIO(app)
+socketio = SocketIO(my_app)
 
 patient = Blueprint('patient', __name__,)
 
