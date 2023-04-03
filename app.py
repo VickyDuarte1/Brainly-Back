@@ -7,26 +7,24 @@ from routes.patient_routes import patient
 from routes.mp_routes import merpago
 from routes.comments_route import comments
 
-
 my_app = Flask(__name__)
 socketio = SocketIO(my_app)
 CORS(my_app)
 
 # Ruta de autenticación
-app.register_blueprint(auth)
+my_app.register_blueprint(auth)
 
 # Ruta CRUD doctores
-app.register_blueprint(doctor)
+my_app.register_blueprint(doctor)
 
 # Ruta CRUD pacientes
-app.register_blueprint(patient)
+my_app.register_blueprint(patient, my_app=my_app, socketio=socketio)
 
 # Ruta MERCADO_PAGO
-app.register_blueprint(merpago)
+my_app.register_blueprint(merpago)
 
 # Ruta Comentarios/Reviews
-app.register_blueprint(comments)
-
+my_app.register_blueprint(comments)
 
 if __name__ == '__main__':
-    my_app.run()
+    socketio.run(my_app)
