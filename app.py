@@ -8,10 +8,9 @@ from routes.mp_routes import merpago
 from routes.comments_route import comments
 from routes.cloudinary_routes import upload
 
+socketio = SocketIO(app)
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app)
-CORS(socketio)
 
 # Ruta de autenticación
 app.register_blueprint(auth)
