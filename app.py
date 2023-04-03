@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_socketio_cors import CORS
+from flask_socketio import SocketIO
 from routes.auth_routes import auth
 from routes.doctor_routes import doctor
 from routes.patient_routes import patient, socketio
