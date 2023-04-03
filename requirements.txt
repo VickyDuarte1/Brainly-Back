@@ -8,3 +8,4 @@ Flask-WTF==1.0.0
 PyJWT==2.3.0
 mercadopago==2.2.0
 Flask-SocketIO
+cloudinary==1.32.0
