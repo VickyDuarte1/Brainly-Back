@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-from flask_socketio import emit
 from app import socketio
 import sqlite3
 import os
