@@ -30,7 +30,8 @@ def obtener_pacientes():
     conn.close()
     
     # Emitir evento a través de SocketIO
-    socketio.emit('notificacion', 'Lista de Pacientes', namespace='/')
+    data = {'message': 'Hola desde Flask!'}
+    socketio.emit('json', data, namespace='/')
 
     return jsonify({'pacientes': pacientes}), 200
 
