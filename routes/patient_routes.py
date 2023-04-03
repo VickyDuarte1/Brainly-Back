@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
-from flasksocketio import socketio1
+from flask_socketio import SocketIO
 import sqlite3
 import os
 
 patient = Blueprint('patient', __name__,)
+socketio = SocketIO()
 
 # Obtener la ruta base de tu proyecto
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -29,7 +30,7 @@ def obtener_pacientes():
     conn.close()
     
     # Emitir evento a través de SocketIO
-    socketio1.emit('notificacion', 'Nuevo paciente agregado', namespace='/')
+    socketio.emit('notificacion', 'Nuevo paciente agregado', namespace='/')
 
     return jsonify({'pacientes': pacientes}), 200
 
