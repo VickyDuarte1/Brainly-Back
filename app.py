@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_socketio import SocketIO
 from flask_cors import CORS
 from routes.auth_routes import auth
 from routes.doctor_routes import doctor
@@ -8,6 +9,7 @@ from routes.comments_route import comments
 
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 CORS(app)
 
 # Ruta de autenticación
