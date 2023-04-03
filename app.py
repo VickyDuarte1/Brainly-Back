@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_socketio import SocketIO
 from flask_cors import CORS
 from routes.auth_routes import auth
 from routes.doctor_routes import doctor
@@ -8,6 +9,7 @@ from routes.comments_route import comments
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app)
 
 # Ruta de autenticación
 app.register_blueprint(auth)
@@ -23,6 +25,8 @@ app.register_blueprint(merpago)
 
 # Ruta Comentarios/Reviews
 app.register_blueprint(comments)
+
+socketio = SocketIO(app, async_mode='eventlet')
 
 if __name__ == '__main__':
     app.run()
