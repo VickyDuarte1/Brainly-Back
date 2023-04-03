@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from routes.auth_routes import auth
 from routes.doctor_routes import doctor
-from routes.patient_routes import patient
+from routes.patient_routes import patient, socketio
 from routes.mp_routes import merpago
 from routes.comments_route import comments
 from routes.cloudinary_routes import upload
@@ -28,5 +28,10 @@ app.register_blueprint(comments)
 # Ruta Cloudinary
 app.register_blueprint(upload)
 
+# Inicializar el servidor SocketIO con el blueprint de chat
+socketio.init_app(app, blueprint=patient)
+
 if __name__ == '__main__':
     app.run()
+    # Iniciar el servidor SocketIO en segundo plano
+    socketio.run(app)
