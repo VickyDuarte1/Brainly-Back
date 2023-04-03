@@ -1,10 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_socketio import SocketIO
-from sse import my_app, socketio
 import sqlite3
 import os
-
-socketio = SocketIO(my_app)
 
 patient = Blueprint('patient', __name__,)
 
