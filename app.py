@@ -29,5 +29,5 @@ app.register_blueprint(comments)
 app.register_blueprint(upload)
 
 if __name__ == '__main__':
-
+    socketio.run(app)
     app.run()
