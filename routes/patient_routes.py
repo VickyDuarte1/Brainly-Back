@@ -55,9 +55,6 @@ def obtener_paciente(id):
 
     # Cerrar la conexión a la base de datos
     conn.close()
-    
-    # Emitir evento a través de SocketIO
-    socketio.emit('notificacion', 'Paciente encontrado.', namespace='/')
 
     return jsonify({'paciente': {'id': resultado[0], 'nombre': resultado[1], 'correo': resultado[2], 'usuario': resultado[3], 'contraseña': resultado[4], 'imagen': resultado[5], 'edad': resultado[6], 'genero': resultado[7], 'fecha_nacimiento': resultado[8], 'direccion': resultado[9], 'telefono': resultado[10], 'resultado': resultado[11], 'activo':  resultado[12], 'premium': resultado[13]}}), 200
 
@@ -94,9 +91,6 @@ def actualizar_paciente(id):
 
     # Cerrar la conexión a la base de datos
     conn.close()
-    
-    # Emitir evento a través de SocketIO
-    socketio.emit('notificacion', 'Paciente actualizado correctamente.', namespace='/')
 
     return jsonify({'mensaje': 'Paciente actualizado correctamente.'}), 200
 
@@ -121,9 +115,6 @@ def eliminar_paciente(id):
 
     # Cerrar la conexión a la base de datos
     conn.close()
-    
-    # Emitir evento a través de SocketIO
-    socketio.emit('notificacion', 'Paciente eliminado correctamente.', namespace='/')
 
     return jsonify({'mensaje': 'Paciente eliminado correctamente.'}), 200
 
@@ -149,9 +140,6 @@ def deshabilitar_paciente(id):
 
     # Cerrar la conexión a la base de datos
     conn.close()
-    
-    # Emitir evento a través de SocketIO
-    socketio.emit('notificacion', 'Paciente deshabilitado correctamente.', namespace='/')
 
     return jsonify({'mensaje': 'Paciente deshabilitado correctamente.'}), 200
 
@@ -174,9 +162,6 @@ def habilitar_paciente(id):
 
     # Cerrar la conexión a la base de datos
     conn.close()
-    
-    # Emitir evento a través de SocketIO
-    socketio.emit('notificacion', 'Paciente habilitado correctamente.', namespace='/')
 
     return jsonify({'mensaje': 'Paciente habilitado correctamente.'}), 200
 
