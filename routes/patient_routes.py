@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify
 from flask_socketio import SocketIO
+from flask_socketio_cors import CORS
 import sqlite3
 import os
 
 patient = Blueprint('patient', __name__,)
-socketio = SocketIO()
+socketio = SocketIO(cors_allowed_origins="*")
 
 # Obtener la ruta base de tu proyecto
 basedir = os.path.abspath(os.path.dirname(__file__))
