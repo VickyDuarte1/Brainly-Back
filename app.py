@@ -26,8 +26,6 @@ app.register_blueprint(merpago)
 # Ruta Comentarios/Reviews
 app.register_blueprint(comments)
 
-socketio = SocketIO(app, async_mode='eventlet')
-
 if __name__ == '__main__':
     socketio.run(app)
     app.run()
