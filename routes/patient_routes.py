@@ -29,7 +29,7 @@ def obtener_pacientes():
     conn.close()
     
     # Emitir evento a través de SocketIO
-    socketio.emit('my_event', {'data': 'Se ha usado la ruta "my_route"'}, namespace='/my_namespace')
+    socketio.emit('notificacion', 'Nuevo paciente agregado', namespace='/')
 
     return jsonify({'pacientes': pacientes}), 200
 
