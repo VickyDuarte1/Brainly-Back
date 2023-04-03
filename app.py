@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_socketio import SocketIO
 from flask_cors import CORS
 from routes.auth_routes import auth
 from routes.doctor_routes import doctor
@@ -9,6 +10,8 @@ from routes.cloudinary_routes import upload
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app)
+CORS(socketio)
 
 # Ruta de autenticación
 app.register_blueprint(auth)
