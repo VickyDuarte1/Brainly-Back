@@ -138,4 +138,4 @@ def cambiar_contraseña():
     # Cerrar la conexión a la base de datos
     conn.close()
 
-    return jsonify({'mensaje': 'Contraseña actualizada correctamente.'}), 200
+    return jsonify({'mensaje': 'Contraseña actualizada correctamente.'}), 200
