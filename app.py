@@ -10,6 +10,7 @@ from routes.detection_routes import detection
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Ruta de autenticación
 app.register_blueprint(auth)
