@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app import socketio
+from flasksocketio import socketio1
 import sqlite3
 import os
 
@@ -29,7 +29,7 @@ def obtener_pacientes():
     conn.close()
     
     # Emitir evento a través de SocketIO
-    socketio.emit('notificacion', 'Nuevo paciente agregado', namespace='/')
+    socketio1.emit('notificacion', 'Nuevo paciente agregado', namespace='/')
 
     return jsonify({'pacientes': pacientes}), 200
 
