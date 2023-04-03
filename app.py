@@ -1,7 +1,5 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_socketio_cors import CORS
-from flask_socketio import SocketIO
 from routes.auth_routes import auth
 from routes.doctor_routes import doctor
 from routes.patient_routes import patient, socketio
@@ -12,7 +10,6 @@ from routes.detection_routes import detection
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Ruta de autenticación
 app.register_blueprint(auth)
@@ -35,7 +32,7 @@ app.register_blueprint(upload)
 # Ruta Resultados MRI
 app.register_blueprint(detection)
 
-# Inicializar el servidor SocketIO con el blueprint de chat
+# Inicializar el servidor SocketIO con el blueprint
 socketio.init_app(app, blueprint=patient)
 
 if __name__ == '__main__':
