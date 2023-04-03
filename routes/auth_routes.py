@@ -88,8 +88,8 @@ def iniciar_sesion():
     resultado = cursor.fetchone()
     if resultado is None:
         return jsonify({'mensaje': 'Nombre de usuario o contraseña incorrectos.'}), 401
-    if resultado[2] == False:
-        return jsonify({"mensaje": "No puedes iniciar sesión, tu cuenta se encuentra desactivada."}), 400
+    if resultado[2] != 1:
+        return jsonify({"mensaje": "No puedes iniciar sesión, tu cuenta se encuentra desactivada."}), 401
    
     tipo_usuario = resultado[3]
 
