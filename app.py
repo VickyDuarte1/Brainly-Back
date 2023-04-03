@@ -8,9 +8,9 @@ from routes.mp_routes import merpago
 from routes.comments_route import comments
 
 
-app = Flask(__name__)
-socketio = SocketIO(app)
-CORS(app)
+my_app = Flask(__name__)
+socketio = SocketIO(my_app)
+CORS(my_app)
 
 # Ruta de autenticación
 app.register_blueprint(auth)
@@ -29,4 +29,4 @@ app.register_blueprint(comments)
 
 
 if __name__ == '__main__':
-    app.run()
+    my_app.run()
