@@ -28,6 +28,11 @@ app.register_blueprint(comments)
 # Ruta Cloudinary
 app.register_blueprint(upload)
 
-if __name__ == '__main__':
+# Inicializar el servidor SocketIO con el blueprint de chat
+chat_socketio.init_app(app, blueprint=chat_bp)
 
+if __name__ == '__main__':
+    # Iniciar el servidor de desarrollo Flask
     app.run()
+    # Iniciar el servidor SocketIO en segundo plano
+    chat_socketio.run(app)
