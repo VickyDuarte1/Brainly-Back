@@ -9,3 +9,4 @@ PyJWT==2.3.0
 mercadopago==2.2.0
 Flask-SocketIO
 cloudinary
+flask-socketio-cors
