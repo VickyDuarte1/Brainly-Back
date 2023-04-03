@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_socketio import SocketIO
+from flask_socketio import emit
 import sqlite3
 import os
 
@@ -29,7 +29,7 @@ def obtener_pacientes():
     # Cerrar la conexión a la base de datos
     conn.close()
     
-    # Enviar evento a través de SocketIO
+    # Emitir evento a través de SocketIO
     socketio.emit('my_event', {'data': 'Se ha usado la ruta "my_route"'}, namespace='/my_namespace')
 
     return jsonify({'pacientes': pacientes}), 200
