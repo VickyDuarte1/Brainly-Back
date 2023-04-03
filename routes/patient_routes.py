@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-from flask_sse import sse
 import sqlite3
 import os
 
@@ -28,9 +27,6 @@ def obtener_pacientes():
 
     # Cerrar la conexión a la base de datos
     conn.close()
-    
-    # Notificar a los suscriptores SSE
-    sse.publish({"message": "Pacientes obtenidos"}, type="message")
 
     return jsonify({'pacientes': pacientes}), 200
 
