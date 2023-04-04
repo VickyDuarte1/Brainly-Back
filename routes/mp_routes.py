@@ -48,10 +48,6 @@ def generar_pago():
 #ruta success
 @merpago.route('/pago_exitoso', methods=['POST'])
 def pago_exitoso ():    
-    # Obtener datos de la noti de MP
-    # notificacion = request.get_json()
-    # status del pago
-    # status_pago = notificacion["status"]
       correo_electronico = request.json["correo"]
       if correo_electronico is None:
         return jsonify({'error': 'no recibio correo'})
@@ -73,4 +69,3 @@ def pago_exitoso ():
       return jsonify({'mensaje': 'usuario seteado a premium'})
       # Cerrar conexión 
       conn.close()
-     
