@@ -15,7 +15,9 @@ def crear_tabla_resultados():
     with sqlite3.connect(database_path) as conn:
         conn.execute('''CREATE TABLE IF NOT EXISTS resultados (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        nombre TEXT NOT NULL,
                         usuario TEXT NOT NULL,
+                        correo TEXT, NOT NULL,
                         imagen TEXT NOT NULL,
                         resultado TEXT NOT NULL
                         );''')
@@ -23,7 +25,9 @@ def crear_tabla_resultados():
 # Ruta para registrar un nuevo resultado
 @detection.route('/detection', methods=['POST'])
 def registrar_resultado():
+    nombre = request.json['nombre']
     usuario = request.json['usuario']
+    correo = request.json['correo']
     imagen = request.json['imagen']
     resultado = request.json['resultado']
 
@@ -34,7 +38,7 @@ def registrar_resultado():
 
         # Insertar el nuevo resultado en la tabla 'resultados'
         conn.execute(
-            'INSERT INTO resultados (usuario, imagen, resultado) VALUES (?, ?, ?)', (usuario, imagen, resultado))
+            'INSERT INTO resultados (nombre, usuario, correo, imagen, resultado) VALUES (?, ?, ?, ?, ?)', (nombre, usuario, correo, imagen, resultado))
 
     return jsonify({'mensaje': 'Resultado registrado correctamente.'}), 201
 
@@ -46,6 +50,6 @@ def obtener_resultados():
         cursor = conn.execute('SELECT * FROM resultados')
 
         # Convertir los resultados a una lista de diccionarios
-        resultados = [{'id': row[0], 'usuario': row[1], 'imagen': row[2], 'resultado': row[3]} for row in cursor.fetchall()]
+        resultados = [{'id': row[0], 'nombre': row[1], 'usuario': row[2], 'correo': row[3], 'imagen': row[4], 'resultado': row[5]} for row in cursor.fetchall()]
 
     return jsonify({'resultados': resultados}), 200
