@@ -88,8 +88,8 @@ def iniciar_sesion():
     resultado = cursor.fetchone()
     if resultado is None:
         return jsonify({'mensaje': 'Nombre de usuario o contraseña incorrectos.'}), 401
-    if resultado[2] == False:
-        return jsonify({"mensaje": "No puedes iniciar sesión, tu cuenta se encuentra desactivada."}), 400
+    if resultado[2] != 1:
+        return jsonify({"mensaje": "No puedes iniciar sesión, tu cuenta se encuentra desactivada."}), 401
    
     tipo_usuario = resultado[3]
 
@@ -98,3 +98,44 @@ def iniciar_sesion():
 
     # Cerrar la conexión a la base de datos
     conn.close()
+    
+# Ruta para cambiar contraseña
+    
+   
+@auth.route('/password', methods=['POST'])
+def cambiar_contraseña():
+    usuario = request.json['usuario']
+    contraseña_actual = request.json['current_password']
+    contraseña_nueva = request.json['new_password']
+
+    # Conectar a la base de datos
+    conn = sqlite3.connect(database_path)
+
+    # Verificar que el nombre de usuario y la contraseña actual sean correctos
+    cursor = conn.execute(
+        'SELECT usuario, contraseña, "paciente" as tipo_usuario FROM paciente WHERE usuario = ? AND contraseña = ?'
+        ' UNION '
+        'SELECT usuario, contraseña, "doctor" as tipo_usuario FROM doctor WHERE usuario = ? AND contraseña = ?',
+        (usuario, contraseña_actual, usuario, contraseña_actual))
+    resultado = cursor.fetchone()
+    if resultado is None:
+        return jsonify({'mensaje': 'Nombre de usuario o contraseña incorrectos.'}), 401
+
+    tipo_usuario = resultado[2]
+
+    # Actualizar la contraseña del usuario
+    if tipo_usuario == 'paciente':
+        conn.execute(
+            'UPDATE paciente SET contraseña = ? WHERE usuario = ?',
+            (contraseña_nueva, usuario))
+    elif tipo_usuario == 'doctor':
+        conn.execute(
+            'UPDATE doctor SET contraseña = ? WHERE usuario = ?',
+            (contraseña_nueva, usuario))
+
+    conn.commit()
+
+    # Cerrar la conexión a la base de datos
+    conn.close()
+
+    return jsonify({'mensaje': 'Contraseña actualizada correctamente.'}), 200

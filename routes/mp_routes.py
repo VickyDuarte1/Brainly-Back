@@ -49,22 +49,28 @@ def generar_pago():
 @merpago.route('/pago_exitoso', methods=['POST'])
 def pago_exitoso ():    
     # Obtener datos de la noti de MP
-    notificacion = request.get_json()
+    # notificacion = request.get_json()
     # status del pago
-    status_pago = notificacion["status"]
-
-    if status_pago == 'approved':
-        # Obtener mail del usuario para buscar en DB
-        comprador = notificacion['payer']
-        correo_electronico = comprador['email']
-
+    # status_pago = notificacion["status"]
+      correo_electronico = request.json["correo"]
+      if correo_electronico is None:
+        return jsonify({'error': 'no recibio correo'})
+      
         # Conexión con DB y setear a premium
-        conn = sqlite3.connect(database_path)
+      conn = sqlite3.connect(database_path)   
+         
+      cursor = conn.execute(
+        'SELECT * FROM paciente WHERE correo = ?', (correo_electronico,))
+      resultado = cursor.fetchone()
+      # Si el paciente no existe, devolver un error 404
+      if resultado is None:
+        return jsonify({'mensaje': 'Paciente no encontrado.'}), 404      
+      else:      
         conn.execute(
-        'UPDATE paciente SET premium = ? WHERE correo = ?', (True, correo_electronico))
+          'UPDATE paciente SET premium = ? WHERE correo = ?', (True, correo_electronico))
         conn.commit()
 
-        # Cerrar conexión 
-        conn.close()
-
-    return jsonify({'mensaje': 'Gracias por suscribirte culiau'})
+      return jsonify({'mensaje': 'usuario seteado a premium'})
+      # Cerrar conexión 
+      conn.close()
+     
