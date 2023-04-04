@@ -20,7 +20,7 @@ def crear_tabla_resultados():
                         correo TEXT, NOT NULL,
                         imagen TEXT NOT NULL,
                         resultado TEXT NOT NULL
-                        );''')
+                        );''''')
 
 # Ruta para registrar un nuevo resultado
 @detection.route('/detection', methods=['POST'])
