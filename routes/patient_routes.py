@@ -164,4 +164,3 @@ def habilitar_paciente(id):
     conn.close()
 
     return jsonify({'mensaje': 'Paciente habilitado correctamente.'}), 200
-
