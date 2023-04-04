@@ -17,10 +17,10 @@ def crear_tabla_resultados():
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         nombre TEXT NOT NULL,
                         usuario TEXT NOT NULL,
-                        correo TEXT, NOT NULL,
+                        correo TEXT NOT NULL,
                         imagen TEXT NOT NULL,
                         resultado TEXT NOT NULL
-                        );''''')
+                        );''')
 
 # Ruta para registrar un nuevo resultado
 @detection.route('/detection', methods=['POST'])
@@ -37,10 +37,17 @@ def registrar_resultado():
         crear_tabla_resultados()
 
         # Insertar el nuevo resultado en la tabla 'resultados'
-        conn.execute(
-            'INSERT INTO resultados (nombre, usuario, correo, imagen, resultado) VALUES (?, ?, ?, ?, ?)', (nombre, usuario, correo, imagen, resultado))
+        cursor = conn.cursor()
+        cursor.execute('BEGIN')
+        try:
+            cursor.execute('INSERT INTO resultados (nombre, usuario, correo, imagen, resultado) VALUES (?, ?, ?, ?, ?)', (nombre, usuario, correo, imagen, resultado))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            return jsonify({'mensaje': 'Error al insertar en la base de datos: ' + str(e)}), 500
 
     return jsonify({'mensaje': 'Resultado registrado correctamente.'}), 201
+
 
 # Ruta para obtener todos los resultados
 @detection.route('/detection/resultados', methods=['GET'])
